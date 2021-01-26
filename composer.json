@@ -1,0 +1,12 @@
+{
+  "name": "rhendric/328/dating",
+  "authors": [
+    {
+      "name": "Ryan Hendrickson",
+      "email": "rhendrickson11@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
