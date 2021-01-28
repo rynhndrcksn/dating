@@ -1,5 +1,9 @@
 <?php
-// this is the CONTROLLER
+/*
+ * @author: Ryan H.
+ * @version: https://github.com/rynhndrcksn/dating/blob/main/index.php
+ * index.php is the controller for our F3 MVC
+ */
 
 // turn on error reporting
 ini_set('display_errors', 1);
