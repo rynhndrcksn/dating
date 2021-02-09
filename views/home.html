@@ -18,22 +18,7 @@
 </head>
 <body>
 <!-- NAVBAR START -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	<div class="container">
-		<a class="navbar-brand" href="#">Bee my Honeycomb</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-						aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-			<div class="navbar-nav">
-				<a class="nav-link active" aria-current="page" href="#">Home</a>
-<!--				<a class="nav-link" href="#">Features</a>-->
-<!--				<a class="nav-link" href="#">Pricing</a>-->
-			</div>
-		</div>
-	</div>
-</nav>
+<include href="views/includes/navbar.html"></include>
 <!-- NAVBAR END -->
 
 <!-- MAIN CONTENT START -->
@@ -53,7 +38,7 @@
 			<div class="row mt-5">
 				<h2 class="text-center">See what our users are saying about us!</h2>
 				<div class="mt-4 border-top border-bottom">
-					<figure class="text-end mt-3">
+					<figure class="text-start mt-3">
 						<blockquote class="blockquote">
 							<p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."</em></p>
 						</blockquote>
@@ -61,7 +46,7 @@
 							user3290823890 <cite title="Source Title"></cite>
 						</figcaption>
 					</figure>
-					<figure class="text-end">
+					<figure class="text-start">
 						<blockquote class="blockquote">
 							<p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."</em></p>
 						</blockquote>
@@ -69,7 +54,7 @@
 							user92340 <cite title="Source Title"></cite>
 						</figcaption>
 					</figure>
-					<figure class="text-end">
+					<figure class="text-start">
 						<blockquote class="blockquote">
 							<p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."</em></p>
 						</blockquote>
@@ -83,7 +68,7 @@
 
 			<!-- CREATE PROFILE BUTTON -->
 			<div class="text-center mt-5">
-				<a class="btn btn-primary" href="#" role="button">Create a Profile!</a>
+				<a class="btn btn-primary" href="sign-up-1" role="button">Create a Profile!</a>
 			</div>
 		</section>
 		<!-- LEFT CONTENT END -->
@@ -91,8 +76,8 @@
 		<!-- RIGHT CONTENT START -->
 		<section class="col-md-5 float-md-end mt-2">
 			<div class="row">
-				<img src="images/splash.jpg" alt="Beekeeper holding honeycomb with bees flying around it."
-						 class="img-fluid rounded-pill">
+				<img src="images/splash.png" alt="Beekeeper holding honeycomb with bees flying around it."
+						 class="rounded">
 			</div>
 		</section>
 		<!-- RIGHT CONTENT END -->
