@@ -103,7 +103,7 @@ $f3->route('POST /summary', function() {
 			$_SESSION['outdoorInterests'] = $_POST['outdoorInterests'];
 		}
 	}
-	
+
 	$view = new Template();
 	echo $view->render('views/summary.html');
 });

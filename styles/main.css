@@ -1,3 +1,8 @@
 #biography {
     height: 175px;
 }
+
+#user-icon {
+    max-height: 300px;
+    max-width: 750px;
+}

@@ -10,6 +10,9 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 				integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
+	<!-- our CSS -->
+	<link rel="stylesheet" href="styles/main.css">
+
 	<title>Summary</title>
 </head>
 <body>
@@ -20,17 +23,44 @@
 
 <!-- START MAIN CONTENT -->
 <div class="container mt-5 border border-3 border-light">
-	<!-- START LEFT COLUMN -->
-	<div class="col-6">
-
+	<div class="row">
+		<!-- START LEFT COLUMN -->
+		<div class="col-md-6">
+			<div class="card mt-3">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">Name: {{ ucfirst(@SESSION.fname) }} {{ ucfirst(@SESSION.lname) }}</li>
+					<li class="list-group-item">Gender: {{ ucfirst(@SESSION.gender) }}</li>
+					<li class="list-group-item">Age: {{ @SESSION.age }}</li>
+					<li class="list-group-item">Phone: {{ @SESSION.phone }}</li>
+					<li class="list-group-item">Email: {{ @SESSION.email }}</li>
+					<li class="list-group-item">State: {{ ucfirst(@SESSION.state) }}</li>
+					<li class="list-group-item">Seeking: {{ ucfirst(@SESSION.seeking) }}</li>
+					<li class="list-group-item">Interests:
+						<repeat group="{{ @SESSION.indoorInterests }}" value="{{ @interest }}">
+							<span> {{ @interest }},</span>
+						</repeat>
+						<repeat group="{{ @SESSION.outdoorInterests }}" value="{{ @interest }}">
+							<span> {{ @interest }},</span>
+						</repeat>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- END LEFT COLUMN -->
+		<!-- START RIGHT COLUMN -->
+		<div class="col-md-6">
+			<img id="user-icon" class="img-fluid rounded mb-5 mx-auto d-none d-md-block" src="images/user-icon.svg" alt="Default user icon">
+			<p id="bio-title"><span class="float-left">Biography</span><br></p>
+			<div id="bio-section" class="text-center">
+				<p>{{ @SESSION.biography }}</p>
+			</div>
+		</div>
+		<!-- END RIGHT COLUMN -->
 	</div>
-	<!-- END LEFT COLUMN -->
-	<!-- START RIGHT COLUMN -->
-	<div class="col-6">
 
+	<div class="text-center mt-3">
+		<button type="submit" class="btn btn-primary">Contact Me!</button>
 	</div>
-	<!-- END RIGHT COLUMN -->
-	<button class="btn btn-primary mx-auto">Contact Me!</button>
 </div>
 <!-- END MAIN CONTENT -->
 
