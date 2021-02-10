@@ -45,7 +45,7 @@
 					<br>
 					<repeat group="{{ @gens }}" value="{{ @gen }}">
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="seeking" id="seeking{{ ucfirst(@gen) }}" value="seeking{{ ucfirst(@gen) }}">
+							<input class="form-check-input" type="radio" name="seeking" id="seeking{{ ucfirst(@gen) }}" value="{{ @gen }}">
 							<label class="form-check-label" for="seeking{{ ucfirst(@gen) }}">{{ ucfirst(@gen) }}</label>
 						</div>
 					</repeat>
