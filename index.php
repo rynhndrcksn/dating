@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 
 // require autoload file
 require_once ('vendor/autoload.php');
+require_once ('model/data-layer.php');
 
 // create an instance of the base class (fat-free framework)
 $f3 = Base::instance();
@@ -23,21 +24,32 @@ $f3->route('GET /', function() {
 });
 
 // start our signup routes (1/3)
-$f3->route('GET /sign-up-1', function() {
+$f3->route('GET /sign-up-1', function($f3) {
+	// set the gender radio buttons
+	$f3->set('gens', getGens());
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-1.html');
 });
 
 // continue signup routes (2/3)
-$f3->route('POST /sign-up-2', function() {
+$f3->route('POST /sign-up-2', function($f3) {
+	// set the gender radio buttons and states
+	$f3->set('gens', getGens());
+	$f3->set('states', getStates());
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-2.html');
 });
 
 // end of our signup routes (3/3)
-$f3->route('POST /sign-up-3', function() {
+$f3->route('POST /sign-up-3', function($f3) {
+	// set indoor and outdoor interests
+	$f3->set('indoors', getInDoor());
+	$f3->set('outdoors', getOutDoor());
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-3.html');

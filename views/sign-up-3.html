@@ -10,7 +10,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
 				integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-	<title>Document</title>
+	<title>Interests</title>
 </head>
 <body>
 
@@ -18,9 +18,38 @@
 <include href="views/includes/navbar.html"></include>
 <!-- NAVBAR END -->
 
-<div class="container">
+<!-- START MAIN CONTENT -->
+<div class="container card mt-5 border border-3 border-light">
+	<h1 class="card-header bg-white">Interests</h1>
+	<div class="card-body">
+		<form action="summary" method="post">
+			<div class="row g-0">
 
+				<p class="fw-bold">In-door Interests</p>
+				<div class="d-flex flex-wrap justify-content-evenly mb-3">
+					<repeat group="{{ @indoors }}" value="{{ @indoor }}">
+						<div class="form-check col-md-3">
+							<input class="form-check-input" type="checkbox" value="{{ @indoor }}" id="{{ @indoor }}" name="indoorInterests[]">
+							<label class="form-check-label" for="{{ @indoor }}">{{ ucfirst(@indoor) }}</label>
+						</div>
+					</repeat>
+				</div>
+
+				<p class="fw-bold">Out-door Interests</p>
+				<div class="d-flex flex-wrap justify-content-evenly mb-3">
+					<repeat group="{{ @outdoors }}" value="{{ @outdoor }}">
+						<div class="form-check col-md-3">
+							<input class="form-check-input" type="checkbox" value="{{ @outdoor }}" id="{{ @outdoor }}" name="outdoorInterests[]">
+							<label class="form-check-label" for="{{ @outdoor }}">{{ ucfirst(@outdoor) }}</label>
+						</div>
+					</repeat>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary float-end">Next ></button>
+		</form>
+	</div>
 </div>
+<!-- END MAIN CONTENT -->
 
 <!-- Option 1: Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
