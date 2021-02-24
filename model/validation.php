@@ -24,11 +24,14 @@ class Validation
 		return $age > 17 && $age < 119;
 	}
 
+	function validGender($gender): bool
+	{
+		return in_array($gender, $this->_dataLayer->getGens());
+	}
+
 	function validPhone($phone): bool
 	{
-		$phone = filter_var($phone,FILTER_SANITIZE_NUMBER_INT);
-		$phone = str_replace("-", "", $phone);
-		return $phone < 15 && $phone > 9;
+		return preg_match('/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/', $phone) || preg_match('/^[0-9]{10}+$/', $phone);
 	}
 
 	function validEmail($email): bool
