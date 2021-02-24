@@ -2,7 +2,7 @@
 /**
  *  * @author Ryan H.
  * @version https://github.com/rynhndrcksn/dating
- * Class Validation that holds a bunch of validation methods for the web app
+ * Class: Validation - holds validation methods for the web app
  */
 class Validation
 {
@@ -36,7 +36,7 @@ class Validation
 
 	function validEmail($email): bool
 	{
-		return filter_var($email, FILTER_SANITIZE_EMAIL);
+		return filter_var($email, FILTER_VALIDATE_EMAIL);
 	}
 
 	function validState($state): bool
@@ -44,11 +44,11 @@ class Validation
 		return in_array($state, $this->_dataLayer->getStates());
 	}
 
-	function validOutdoor($outdoor): bool
+	function validIndoor($indoor): bool
 	{
 		$valid = false;
-		foreach ($outdoor as $item) {
-			if (in_array($item, $this->_dataLayer->getOutDoor())) {
+		foreach ($indoor as $item) {
+			if (in_array($item, $this->_dataLayer->getIndoor())) {
 				$valid = true;
 			} else {
 				$valid = false;
@@ -57,11 +57,11 @@ class Validation
 		return $valid;
 	}
 
-	function validIndoor($indoor): bool
+	function validOutdoor($outdoor): bool
 	{
 		$valid = false;
-		foreach ($indoor as $item) {
-			if (in_array($item, $this->_dataLayer->getInDoor())) {
+		foreach ($outdoor as $item) {
+			if (in_array($item, $this->_dataLayer->getOutdoor())) {
 				$valid = true;
 			} else {
 				$valid = false;

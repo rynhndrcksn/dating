@@ -104,7 +104,7 @@ $f3->route('GET|POST /sign-up-2', function($f3) use ($validator, $dataLayer) {
 		$userEmail = $_POST['email'];
 		$userState = $_POST['state'];
 		$userSeeking = $_POST['seeking'];
-		$userBio = $_POST['biography'];
+		$userBio = $validator->prep_input($_POST['biography']);
 
 		// validate email
 		if ($validator->validEmail($userEmail)) {
@@ -123,15 +123,16 @@ $f3->route('GET|POST /sign-up-2', function($f3) use ($validator, $dataLayer) {
 		// validate seeking
 		if (isset($userSeeking)) {
 			if ($validator->validGender($userSeeking)) {
-				$_SESSION['gender'] = $userSeeking;
+				$_SESSION['seeking'] = $userSeeking;
 			} else {
-				$f3->set('errors["gender"]', 'Not a valid gender');
+				$f3->set('errors["seeking"]', 'Not a valid gender');
 			}
 		}
 
 		// validate biography
-		if (isset($_POST['biography'])) {
-			$_SESSION['biography'] = $_POST['biography'];
+		if (isset($userBio)) {
+			// since we sanitized the input earlier with prep_input, we don't need to worry about it here
+			$_SESSION['biography'] = $userBio;
 		}
 
 		// if there are no errors, redirect to sign-up-3
@@ -143,7 +144,7 @@ $f3->route('GET|POST /sign-up-2', function($f3) use ($validator, $dataLayer) {
 	$f3->set('userEmail', isset($userEmail) ? $userEmail : "");
 	$f3->set('userState', isset($userState) ? $userState : "");
 	$f3->set('userSeeking', isset($userSeeking) ? $userSeeking : "");
-	$f3->set('userbio', isset($userBio) ? $userBio : "");
+	$f3->set('userBio', isset($userBio) ? $userBio : "");
 
 	// create a new view, then sends it to the client
 	$view = new Template();
@@ -153,8 +154,39 @@ $f3->route('GET|POST /sign-up-2', function($f3) use ($validator, $dataLayer) {
 // end of our signup routes (3/3)
 $f3->route('GET|POST /sign-up-3', function($f3) use ($validator, $dataLayer) {
 	// set indoor and outdoor interests
-	$f3->set('indoors', $dataLayer->getInDoor());
-	$f3->set('outdoors', $dataLayer->getOutDoor());
+	$f3->set('indoors', $dataLayer->getIndoor());
+	$f3->set('outdoors', $dataLayer->getOutdoor());
+
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$userIndoors = $_POST['indoorInterests'];
+		$userOutdoors = $_POST['outdoorInterests'];
+
+		// validate indoor activities
+		if (isset($userIndoors)) {
+			if ($validator->validIndoor($userIndoors)) {
+				$_SESSION['indoorInterests'] = $userIndoors;
+			} else {
+				$f3->set('errors["indoor"]', 'Not a valid indoor activity...');
+			}
+		}
+
+		// validate outdoor activities
+		if (isset($userOutdoors)) {
+			if ($validator->validOutdoor($userOutdoors)) {
+				$_SESSION['outdoorInterests'] = $userOutdoors;
+			} else {
+				$f3->set('errors["outdoor"]', 'Not a valid outdoor activity...');
+			}
+		}
+
+		// if there are no errors, redirect to sign-up-3
+		if (empty($f3->get('errors'))) {
+			$f3->reroute('/summary');
+		}
+	}
+
+	$f3->set('userIndoors', isset($userIndoors) ? $userIndoors : []);
+	$f3->set('userOutdoors', isset($userOutdoors) ? $userOutdoors : []);
 
 	// create a new view, then sends it to the client
 	$view = new Template();
@@ -163,21 +195,11 @@ $f3->route('GET|POST /sign-up-3', function($f3) use ($validator, $dataLayer) {
 
 // sign up summary route
 $f3->route('GET|POST /summary', function() {
-	// gather user supplied information
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if (isset($_POST['indoorInterests'])) {
-			$_SESSION['indoorInterests'] = $_POST['indoorInterests'];
-		}
-		if (isset($_POST['outdoorInterests'])) {
-			$_SESSION['outdoorInterests'] = $_POST['outdoorInterests'];
-		}
-	}
-
 	$view = new Template();
 	echo $view->render('views/summary.html');
 
 	// clear our $_SESSION
-	session_destroy();
+	//session_destroy();
 });
 
 // run fat free HAS TO BE THE LAST THING IN FILE

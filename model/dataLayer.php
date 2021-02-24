@@ -2,7 +2,8 @@
 /**
  * @author Ryan H.
  * @version https://github.com/rynhndrcksn/dating
- * Class DataLayer acts as a go between for our controller and views.
+ * Class: DataLayer - provides data to our web app, either by directly returning data, or returning data received
+ * from a database.
  */
 class DataLayer
 {
@@ -28,7 +29,7 @@ class DataLayer
 	 * function that returns an array of indoor activities for the user to select
 	 * @return string[] - array of indoor interests
 	 */
-	function getInDoor(): array {
+	function getIndoor(): array {
 		$array = array('television', 'movies', 'cooking', 'coding', 'puzzles', 'reading', 'cards', 'gaming');
 		sort($array);
 		return $array;
@@ -38,7 +39,7 @@ class DataLayer
 	 * function that returns an array of outdoor activities for the user to select
 	 * @return string[] - array of outdoor interests
 	 */
-	function getOutDoor(): array {
+	function getOutdoor(): array {
 		$array = array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing', 'running', 'yoga');
 		sort($array);
 		return $array;
