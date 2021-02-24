@@ -30,7 +30,7 @@
 					<!-- USER FIRST NAME -->
 					<div class="form-floating mt-3">
 						<input type="text" class="form-control" id="fname" name="fname" placeholder="Jane/John"
-									 value="{{ @SESSION.fname }}">
+									 value="{{ @userFirst }}">
 						<label for="fname">First Name</label>
 						<check if="{{ isset(@errors['fname']) }}">
 							<p class="text-danger">{{ @errors['fname'] }}</p>
@@ -40,7 +40,7 @@
 					<!-- USER LAST NAME -->
 					<div class="form-floating mt-3">
 						<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith"
-									 value="{{ @SESSION.lname }}">
+									 value="{{ @userLast }}">
 						<label for="lname">Last Name</label>
 						<check if="{{ isset(@errors['lname']) }}">
 							<p class="text-danger">{{ @errors['lname'] }}</p>
@@ -49,7 +49,7 @@
 
 					<!-- USER AGE -->
 					<div class="form-floating mt-3">
-						<input type="number" class="form-control" id="age" name="age" placeholder="35" value="{{ @SESSION.age }}">
+						<input type="number" class="form-control" id="age" name="age" placeholder="35" value="{{ @userAge }}">
 						<label for="age">Age</label>
 						<check if="{{ isset(@errors['age']) }}">
 							<p class="text-danger">{{ @errors['age'] }}</p>
@@ -64,7 +64,7 @@
 					<repeat group="{{ @gens }}" value="{{ @gen }}">
 						<div class="form-check form-check-inline">
 							<input class="form-check-input" type="radio" name="gender" id="{{ @gen }}" value="{{ @gen }}"
-							<check if="{{ @gen == @SESSION.gender }}">
+							<check if="{{ @gen == @userGen }}">
 								checked
 							</check>>
 							<label class="form-check-label" for="{{ @gen }}">{{ ucfirst(@gen) }}</label>
@@ -74,7 +74,7 @@
 					<!-- USER PHONE NUMBER -->
 					<div class="form-floating mt-3 mb-3">
 						<input type="tel" class="form-control" id="phone" name="phone" placeholder="(253) 555-5555"
-									 value="{{ @SESSION.phone }}">
+									 value="{{ @userPhone }}">
 						<label for="phone">Phone Number: (2065550505 or 206-555-0505 format)</label>
 						<check if="{{ isset(@errors['phone']) }}">
 							<p class="text-danger">{{ @errors['phone'] }}</p>

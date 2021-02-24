@@ -62,10 +62,12 @@ $f3->route('GET|POST /sign-up-1', function($f3) use ($validator, $dataLayer) {
 		}
 
 		// validate gender
-		if ($validator->validGender($userGen)) {
-			$_SESSION['gender'] = $userGen;
-		} else {
-			$f3->set('errors["gender"]', 'Not a valid gender');
+		if (isset($userGen)) {
+			if ($validator->validGender($userGen)) {
+				$_SESSION['gender'] = $userGen;
+			} else {
+				$f3->set('errors["gender"]', 'Not a valid gender');
+			}
 		}
 
 		// validate phone
@@ -81,16 +83,67 @@ $f3->route('GET|POST /sign-up-1', function($f3) use ($validator, $dataLayer) {
 		}
 	}
 
+	$f3->set('userFirst', isset($userFirst) ? $userFirst : "");
+	$f3->set('userLast', isset($userLast) ? $userLast : "");
+	$f3->set('userAge', isset($userAge) ? $userAge : "");
+	$f3->set('userGen', isset($userGen) ? $userGen : "");
+	$f3->set('userPhone', isset($userPhone) ? $userPhone : "");
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-1.html');
 });
 
 // continue signup routes (2/3)
-$f3->route('GET|POST /sign-up-2', function($f3) use ($dataLayer) {
+$f3->route('GET|POST /sign-up-2', function($f3) use ($validator, $dataLayer) {
 	// set the gender radio buttons and states
 	$f3->set('gens', $dataLayer->getGens());
 	$f3->set('states', $dataLayer->getStates());
+
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		$userEmail = $_POST['email'];
+		$userState = $_POST['state'];
+		$userSeeking = $_POST['seeking'];
+		$userBio = $_POST['biography'];
+
+		// validate email
+		if ($validator->validEmail($userEmail)) {
+			$_SESSION['email'] = $userEmail;
+		} else {
+			$f3->set('errors["email"]', 'Not a valid email');
+		}
+
+		// validate state
+		if ($validator->validState($userState)) {
+			$_SESSION['state'] = $userState;
+		} else {
+			$f3->set('errors["state"]', 'Not a valid state...');
+		}
+
+		// validate seeking
+		if (isset($userSeeking)) {
+			if ($validator->validGender($userSeeking)) {
+				$_SESSION['gender'] = $userSeeking;
+			} else {
+				$f3->set('errors["gender"]', 'Not a valid gender');
+			}
+		}
+
+		// validate biography
+		if (isset($_POST['biography'])) {
+			$_SESSION['biography'] = $_POST['biography'];
+		}
+
+		// if there are no errors, redirect to sign-up-3
+		if (empty($f3->get('errors'))) {
+			$f3->reroute('/sign-up-3');
+		}
+	}
+
+	$f3->set('userEmail', isset($userEmail) ? $userEmail : "");
+	$f3->set('userState', isset($userState) ? $userState : "");
+	$f3->set('userSeeking', isset($userSeeking) ? $userSeeking : "");
+	$f3->set('userbio', isset($userBio) ? $userBio : "");
 
 	// create a new view, then sends it to the client
 	$view = new Template();
@@ -102,24 +155,6 @@ $f3->route('GET|POST /sign-up-3', function($f3) use ($validator, $dataLayer) {
 	// set indoor and outdoor interests
 	$f3->set('indoors', $dataLayer->getInDoor());
 	$f3->set('outdoors', $dataLayer->getOutDoor());
-
-	// gather user supplied information
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if ($validator->validEmail($_POST['email'])) {
-			$_SESSION['email'] = $_POST['email'];
-		}
-		if (isset($_POST['state'])) {
-			$_SESSION['state'] = $_POST['state'];
-		}
-		if (isset($_POST['seeking'])) {
-			$_SESSION['seeking'] = $_POST['seeking'];
-		}
-		if (isset($_POST['biography'])) {
-			$_SESSION['biography'] = $_POST['biography'];
-		}
-	}
-
-
 
 	// create a new view, then sends it to the client
 	$view = new Template();

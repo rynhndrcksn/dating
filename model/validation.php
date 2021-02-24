@@ -39,6 +39,11 @@ class Validation
 		return filter_var($email, FILTER_SANITIZE_EMAIL);
 	}
 
+	function validState($state): bool
+	{
+		return in_array($state, $this->_dataLayer->getStates());
+	}
+
 	function validOutdoor($outdoor): bool
 	{
 		$valid = false;
