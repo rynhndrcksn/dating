@@ -14,7 +14,8 @@ session_start();
 
 // require autoload file
 require_once ('vendor/autoload.php');
-require_once ('model/data-layer.php');
+$validator = new Validation();
+$dataLayer = new DataLayer();
 
 // create an instance of the base class (fat-free framework)
 $f3 = Base::instance();
@@ -27,25 +28,17 @@ $f3->route('GET /', function() {
 });
 
 // start our signup routes (1/3)
-$f3->route('GET|POST /sign-up-1', function($f3) {
+$f3->route('GET|POST /sign-up-1', function($f3) use ($dataLayer) {
 	// set the gender radio buttons
-	$f3->set('gens', getGens());
+	$f3->set('gens', $dataLayer->getGens());
 
-	// create a new view, then sends it to the client
-	$view = new Template();
-	echo $view->render('views/sign-up-1.html');
-});
-
-// continue signup routes (2/3)
-$f3->route('POST /sign-up-2', function($f3) {
-	// set the gender radio buttons and states
-	$f3->set('gens', getGens());
-	$f3->set('states', getStates());
-
+ // TODO: FINISH ADDING $VALIDATOR AND $DATALAYER TO INDEX
 	// gather user supplied information
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (isset($_POST['fname'])) {
 			$_SESSION['fname'] = $_POST['fname'];
+		} else {
+			$f3->set('errors["fname"]', 'First name cannot be blank');
 		}
 		if (isset($_POST['lname'])) {
 			$_SESSION['lname'] = $_POST['lname'];
@@ -59,21 +52,38 @@ $f3->route('POST /sign-up-2', function($f3) {
 		if (isset($_POST['phone'])) {
 			$_SESSION['phone'] = $_POST['phone'];
 		}
+
+		// if there are no errors, redirect to sign-up-2
+		if (empty($f3->get('errors'))) {
+			$f3->reroute('/sign-up-2');
+		}
 	}
+
+	// create a new view, then sends it to the client
+	$view = new Template();
+	echo $view->render('views/sign-up-1.html');
+});
+
+// continue signup routes (2/3)
+$f3->route('GET|POST /sign-up-2', function($f3) use ($dataLayer) {
+	// set the gender radio buttons and states
+	$f3->set('gens', $dataLayer->getGens());
+	$f3->set('states', $dataLayer->getStates());
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-2.html');
 });
 
 // end of our signup routes (3/3)
-$f3->route('POST /sign-up-3', function($f3) {
+$f3->route('GET|POST /sign-up-3', function($f3) use ($validator, $dataLayer) {
 	// set indoor and outdoor interests
-	$f3->set('indoors', getInDoor());
-	$f3->set('outdoors', getOutDoor());
+	$f3->set('indoors', $dataLayer->getInDoor());
+	$f3->set('outdoors', $dataLayer->getOutDoor());
 
 	// gather user supplied information
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if (isset($_POST['email'])) {
+		if ($validator->validName($_POST['email'])) {
 			$_SESSION['email'] = $_POST['email'];
 		}
 		if (isset($_POST['state'])) {
@@ -87,13 +97,15 @@ $f3->route('POST /sign-up-3', function($f3) {
 		}
 	}
 
+
+
 	// create a new view, then sends it to the client
 	$view = new Template();
 	echo $view->render('views/sign-up-3.html');
 });
 
 // sign up summary route
-$f3->route('POST /summary', function() {
+$f3->route('GET|POST /summary', function() {
 	// gather user supplied information
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if (isset($_POST['indoorInterests'])) {

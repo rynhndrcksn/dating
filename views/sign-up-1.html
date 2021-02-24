@@ -22,32 +22,44 @@
 <div class="container card mt-5 border border-3 border-light">
 	<h1 class="card-header bg-white">Personal Information</h1>
 	<div class="card-body">
-		<form action="sign-up-2" method="post">
+		<form action="#" method="post">
 			<div class="row g-0">
 				<!-- LEFT COLUMN-->
 				<div class="col-md-8">
 					<div class="form-floating mt-3">
-						<input type="text" class="form-control" id="fname" name="fname" placeholder="Jane/John">
+						<input type="text" class="form-control" id="fname" name="fname" placeholder="Jane/John"
+									 value="{{ @SESSION.fname }}">
 						<label for="fname">First Name</label>
+						<check if="{{ isset(@errors['fname']) }}">
+							<p class="text-danger">{{ @errors['fname'] }}</p>
+						</check>
 					</div>
 					<div class="form-floating mt-3">
-						<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith">
+						<input type="text" class="form-control" id="lname" name="lname" placeholder="Smith"
+									 value="{{ @SESSION.lname }}">
 						<label for="lname">Last Name</label>
+						<check if="{{ isset(@errors['lname']) }}">
+							<p class="text-danger">{{ @errors['lname'] }}</p>
+						</check>
 					</div>
 					<div class="form-floating mt-3">
-						<input type="number" class="form-control" id="age" name="age" placeholder="35">
+						<input type="number" class="form-control" id="age" name="age" placeholder="35" value="{{ @SESSION.age }}">
 						<label for="age">Age</label>
 					</div>
-					<label class="mt-3 fw-bold">Gender</label>
-					<br>
+					<p class="mt-3 fw-bold">Gender</p>
 					<repeat group="{{ @gens }}" value="{{ @gen }}">
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" name="gender" id="{{ @gen }}" value="{{ @gen }}">
+							<input class="form-check-input" type="radio" name="gender" id="{{ @gen }}" value="{{ @gen }}"
+							<check if="{{ @gen == @SESSION.gen }}">
+								checked
+							</check>>
 							<label class="form-check-label" for="{{ @gen }}">{{ ucfirst(@gen) }}</label>
+
 						</div>
 					</repeat>
 					<div class="form-floating mt-3 mb-3">
-						<input type="tel" class="form-control" id="phone" name="phone" placeholder="(253) 555-5555">
+						<input type="tel" class="form-control" id="phone" name="phone" placeholder="(253) 555-5555"
+									 value="{{ @SESSION.phone }}">
 						<label for="phone">Phone Number</label>
 					</div>
 				</div>
