@@ -30,6 +30,9 @@ class Controller
 		echo $view->render('views/home.html');
 	}
 
+	/**
+	 * displays the first sign up page, handles validating, then information is saved to Member object
+	 */
 	function signUp1()
 	{
 		// set the gender radio buttons
@@ -82,11 +85,9 @@ class Controller
 
 			// check whether or not we have a premium member
 			if(isset($_POST["premium"])) {
-				$member = new PremiumMember($userFirst, $userLast, $userAge, $userGen, $userPhone);
-				$_SESSION['member'] = $member;
+				$_SESSION['member'] = new PremiumMember($userFirst, $userLast, $userAge, $userGen, $userPhone);
 			} else {
-				$member = new Member($userFirst, $userLast, $userAge, $userGen, $userPhone);
-				$_SESSION['member'] = $member;
+				$_SESSION['member'] = new Member($userFirst, $userLast, $userAge, $userGen, $userPhone);
 			}
 
 			// if there are no errors, redirect to sign-up-2
@@ -106,5 +107,118 @@ class Controller
 		echo $view->render('views/sign-up-1.html');
 	}
 
+	/**
+	 * displays the 2nd sign up page, validates user inputs, and reroutes to either the interest (if premium member) or
+	 * summary if not
+	 */
+	function signUp2()
+	{
+		// set the gender radio buttons and states
+		$this->_f3->set('gens', $this->_dataLayer->getGens());
+		$this->_f3->set('states', $this->_dataLayer->getStates());
 
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$userEmail = $_POST['email'];
+			$userState = $_POST['state'];
+			$userSeeking = $_POST['seeking'];
+			$userBio = $this->_validator->prep_input($_POST['biography']);
+
+			// validate email
+			if ($this->_validator->validEmail($userEmail)) {
+				$_SESSION['email'] = $userEmail;
+			} else {
+				$this->_f3->set('errors["email"]', 'Not a valid email');
+			}
+
+			// validate state
+			if ($this->_validator->validState($userState)) {
+				$_SESSION['state'] = $userState;
+			} else {
+				$this->_f3->set('errors["state"]', 'Not a valid state...');
+			}
+
+			// validate seeking
+			if (isset($userSeeking)) {
+				if ($this->_validator->validGender($userSeeking)) {
+					$_SESSION['seeking'] = $userSeeking;
+				} else {
+					$this->_f3->set('errors["seeking"]', 'Not a valid gender');
+				}
+			}
+
+			// validate biography
+			if (isset($userBio)) {
+				// since we sanitized the input earlier with prep_input, we don't need to worry about it here
+				$_SESSION['biography'] = $userBio;
+			}
+
+			// if there are no errors, redirect to sign-up-3
+			if (empty($this->_f3->get('errors'))) {
+				$this->_f3->reroute('/sign-up-3');
+			}
+		}
+
+		$this->_f3->set('userEmail', isset($userEmail) ? $userEmail : "");
+		$this->_f3->set('userState', isset($userState) ? $userState : "");
+		$this->_f3->set('userSeeking', isset($userSeeking) ? $userSeeking : "");
+		$this->_f3->set('userBio', isset($userBio) ? $userBio : "");
+
+		// create a new view, then sends it to the client
+		$view = new Template();
+		echo $view->render('views/sign-up-2.html');
+	}
+
+	/**
+	 * displays the 3rd sign up page, validates it, then user is rerouted to summary
+	 */
+	function signUp3()
+	{
+		// set indoor and outdoor interests
+		$this->_f3->set('indoors', $this->_dataLayer->getIndoor());
+		$this->_f3->set('outdoors', $this->_dataLayer->getOutdoor());
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$userIndoors = $_POST['indoorInterests'];
+			$userOutdoors = $_POST['outdoorInterests'];
+
+			// validate indoor activities
+			if (isset($userIndoors)) {
+				if ($this->_validator->validIndoor($userIndoors)) {
+					$_SESSION['indoorInterests'] = $userIndoors;
+				} else {
+					$this->_f3->set('errors["indoor"]', 'Not a valid indoor activity...');
+				}
+			}
+
+			// validate outdoor activities
+			if (isset($userOutdoors)) {
+				if ($this->_validator->validOutdoor($userOutdoors)) {
+					$_SESSION['outdoorInterests'] = $userOutdoors;
+				} else {
+					$this->_f3->set('errors["outdoor"]', 'Not a valid outdoor activity...');
+				}
+			}
+
+			// if there are no errors, redirect to sign-up-3
+			if (empty($this->_f3->get('errors'))) {
+				$this->_f3->reroute('/summary');
+			}
+		}
+
+		$this->_f3->set('userIndoors', isset($userIndoors) ? $userIndoors : []);
+		$this->_f3->set('userOutdoors', isset($userOutdoors) ? $userOutdoors : []);
+
+		// create a new view, then sends it to the client
+		$view = new Template();
+		echo $view->render('views/sign-up-3.html');
+	}
+
+	function summary()
+	{
+		$view = new Template();
+		echo $view->render('views/summary.html');
+
+		// clear our $_SESSION
+		session_destroy();
+	}
 }
