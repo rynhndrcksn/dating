@@ -22,7 +22,7 @@ class PremiumMember extends Member
 	/**
 	 * @param array $indoorInterests - user's indoor interests
 	 */
-	public function setIndoorInterests(array $indoorInterests): void
+	public function setIndoorInterests(array $indoorInterests)
 	{
 		$this->_indoorInterests = $indoorInterests;
 	}
@@ -38,7 +38,7 @@ class PremiumMember extends Member
 	/**
 	 * @param array $outdoorInterests - user's outdoor interests
 	 */
-	public function setOutdoorInterests(array $outdoorInterests): void
+	public function setOutdoorInterests(array $outdoorInterests)
 	{
 		$this->_outdoorInterests = $outdoorInterests;
 	}

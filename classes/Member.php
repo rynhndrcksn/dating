@@ -48,7 +48,7 @@ class Member
 	/**
 	 * @param string $fname - user's first name
 	 */
-	public function setFname(string $fname): void
+	public function setFname(string $fname)
 	{
 		$this->_fname = $fname;
 	}
@@ -64,7 +64,7 @@ class Member
 	/**
 	 * @param string $lname - user's last name
 	 */
-	public function setLname(string $lname): void
+	public function setLname(string $lname)
 	{
 		$this->_lname = $lname;
 	}
@@ -80,7 +80,7 @@ class Member
 	/**
 	 * @param int $age - user's age
 	 */
-	public function setAge(int $age): void
+	public function setAge(int $age)
 	{
 		$this->_age = $age;
 	}
@@ -96,7 +96,7 @@ class Member
 	/**
 	 * @param string $gender - user's gender
 	 */
-	public function setGender(string $gender): void
+	public function setGender(string $gender)
 	{
 		$this->_gender = $gender;
 	}
@@ -112,7 +112,7 @@ class Member
 	/**
 	 * @param string $phone - user's phone number
 	 */
-	public function setPhone(string $phone): void
+	public function setPhone(string $phone)
 	{
 		$this->_phone = $phone;
 	}
@@ -128,7 +128,7 @@ class Member
 	/**
 	 * @param string $email - user's email
 	 */
-	public function setEmail(string $email): void
+	public function setEmail(string $email)
 	{
 		$this->_email = $email;
 	}
@@ -144,7 +144,7 @@ class Member
 	/**
 	 * @param string $state - user's state
 	 */
-	public function setState(string $state): void
+	public function setState(string $state)
 	{
 		$this->_state = $state;
 	}
@@ -160,7 +160,7 @@ class Member
 	/**
 	 * @param string $seeking - user's seeking
 	 */
-	public function setSeeking(string $seeking): void
+	public function setSeeking(string $seeking)
 	{
 		$this->_seeking = $seeking;
 	}
@@ -176,7 +176,7 @@ class Member
 	/**
 	 * @param string $bio - user's biography
 	 */
-	public function setBio(string $bio): void
+	public function setBio(string $bio)
 	{
 		$this->_bio = $bio;
 	}

@@ -28,21 +28,24 @@
 		<div class="col-md-6">
 			<div class="card mt-3">
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item">Name: {{ ucfirst(@SESSION.fname) }} {{ ucfirst(@SESSION.lname) }}</li>
-					<li class="list-group-item">Gender: {{ ucfirst(@SESSION.gender) }}</li>
-					<li class="list-group-item">Age: {{ @SESSION.age }}</li>
-					<li class="list-group-item">Phone: {{ @SESSION.phone }}</li>
-					<li class="list-group-item">Email: {{ @SESSION.email }}</li>
-					<li class="list-group-item">State: {{ ucfirst(@SESSION.state) }}</li>
-					<li class="list-group-item">Seeking: {{ ucfirst(@SESSION.seeking) }}</li>
-					<li class="list-group-item">Interests:
-						<repeat group="{{ @SESSION.indoorInterests }}" value="{{ @interest }}">
-							<span> {{ @interest }},</span>
-						</repeat>
-						<repeat group="{{ @SESSION.outdoorInterests }}" value="{{ @interest }}">
-							<span> {{ @interest }},</span>
-						</repeat>
-					</li>
+					<li class="list-group-item">Name: {{ ucfirst(@SESSION.member->getFname()) }}
+						{{ ucfirst(@SESSION.member->getLname()) }}</li>
+					<li class="list-group-item">Age: {{ @SESSION.member->getAge() }}</li>
+					<li class="list-group-item">Gender: {{ ucfirst(@SESSION.member->getGender()) }}</li>
+					<li class="list-group-item">Phone: {{ @SESSION.member->getPhone() }}</li>
+					<li class="list-group-item">Email: {{ @SESSION.member->getEmail() }}</li>
+					<li class="list-group-item">State: {{ ucfirst(@SESSION.member->getState()) }}</li>
+					<li class="list-group-item">Seeking: {{ ucfirst(@SESSION.member->getSeeking()) }}</li>
+					<check if="{{ @SESSION.member instanceof PremiumMember }}">
+						<li class="list-group-item">Interests:
+							<repeat group="{{ @SESSION.member->getIndoorInterests() }}" value="{{ @interest }}">
+								<span> {{ @interest }},</span>
+							</repeat>
+							<repeat group="{{ @SESSION.member->getOutdoorInterests() }}" value="{{ @interest }}">
+								<span> {{ @interest }},</span>
+							</repeat>
+						</li>
+					</check>
 				</ul>
 			</div>
 		</div>
@@ -52,7 +55,7 @@
 			<img id="user-icon" class="img-fluid rounded mb-5 mx-auto d-none d-md-block" src="images/user-icon.svg" alt="Default user icon">
 			<p id="bio-title"><span class="float-left">Biography</span><br></p>
 			<div id="bio-section" class="text-center">
-				<p>{{ @SESSION.biography }}</p>
+				<p>{{ ucfirst(@SESSION.member->getBio()) }}</p>
 			</div>
 		</div>
 		<!-- END RIGHT COLUMN -->

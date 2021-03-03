@@ -112,6 +112,8 @@ class Controller
 			$userEmail = $_POST['email'];
 			$userState = $_POST['state'];
 			$userSeeking = $_POST['seeking'];
+			// neither of these are working to filter the input? It's the most bizarre thing
+			//$userBio = filter_var($_POST['biography'], FILTER_SANITIZE_STRING);
 			$userBio = $this->_validator->prep_input($_POST['biography']);
 
 			// validate email
@@ -120,13 +122,13 @@ class Controller
 			}
 
 			// validate state
-			if ($this->_validator->validState($userState)) {
+			if (!$this->_validator->validState($userState)) {
 				$this->_f3->set('errors["state"]', 'Not a valid state...');
 			}
 
 			// validate seeking
 			if (isset($userSeeking)) {
-				if ($this->_validator->validGender($userSeeking)) {
+				if (!$this->_validator->validGender($userSeeking)) {
 					$this->_f3->set('errors["seeking"]', 'Not a valid gender');
 				}
 			}
@@ -186,8 +188,16 @@ class Controller
 
 			// if there are no errors, assign the interests to our object then redirect to summary
 			if (empty($this->_f3->get('errors'))) {
-				$_SESSION['member']->setIndoorInterests($userIndoors);
-				$_SESSION['member']->setOutdoorInterests($userOutdoors);
+				if (isset($userIndoors)) {
+					$_SESSION['member']->setIndoorInterests($userIndoors);
+				} else {
+					$_SESSION['member']->setIndoorInterests(array('no indoor activities'));
+				}
+				if (isset($userOutdoors)) {
+					$_SESSION['member']->setOutdoorInterests($userOutdoors);
+				} else {
+					$_SESSION['member']->setOutdoorInterests(array('no outdoor activities'));
+				}
 
 				$this->_f3->reroute('/summary');
 			}
