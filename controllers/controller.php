@@ -47,51 +47,42 @@ class Controller
 			$userPhone = $_POST['phone'];
 
 			// validate first name
-			if ($this->_validator->validName($userFirst)) {
-				$_SESSION['fname'] = $userFirst;
-			} else {
+			if (!$this->_validator->validName($userFirst)) {
 				$this->_f3->set('errors["fname"]', 'Not a valid first name');
 			}
 
 			// validate last name
-			if ($this->_validator->validName($userLast)) {
-				$_SESSION['lname'] = $userLast;
-			} else {
+			if (!$this->_validator->validName($userLast)) {
 				$this->_f3->set('errors["lname"]', 'Not a valid last name');
 			}
 
 			// validate age
-			if ($this->_validator->validAge($userAge)) {
-				$_SESSION['age'] = $userAge;
-			} else {
+			if (!$this->_validator->validAge($userAge)) {
 				$this->_f3->set('errors["age"]', 'Not a valid age');
 			}
 
 			// validate gender
 			if (isset($userGen)) {
-				if ($this->_validator->validGender($userGen)) {
-					$_SESSION['gender'] = $userGen;
-				} else {
+				if (!$this->_validator->validGender($userGen)) {
 					$this->_f3->set('errors["gender"]', 'Not a valid gender');
 				}
 			}
 
 			// validate phone
-			if ($this->_validator->validPhone($userPhone)) {
-				$_SESSION['phone'] = $userPhone;
-			} else {
+			if (!$this->_validator->validPhone($userPhone)) {
 				$this->_f3->set('errors["phone"]', 'Not a valid phone number');
 			}
 
-			// check whether or not we have a premium member
-			if(isset($_POST["premium"])) {
-				$_SESSION['member'] = new PremiumMember($userFirst, $userLast, $userAge, $userGen, $userPhone);
-			} else {
-				$_SESSION['member'] = new Member($userFirst, $userLast, $userAge, $userGen, $userPhone);
-			}
-
-			// if there are no errors, redirect to sign-up-2
+			// if there are no errors, create + store our member object then redirect to sign-up-2
 			if (empty($this->_f3->get('errors'))) {
+
+				// check whether or not we have a premium member
+				if(isset($_POST["premium"])) {
+					$_SESSION['member'] = new PremiumMember($userFirst, $userLast, $userAge, $userGen, $userPhone);
+				} else {
+					$_SESSION['member'] = new Member($userFirst, $userLast, $userAge, $userGen, $userPhone);
+				}
+
 				$this->_f3->reroute('/sign-up-2');
 			}
 		}
@@ -124,37 +115,35 @@ class Controller
 			$userBio = $this->_validator->prep_input($_POST['biography']);
 
 			// validate email
-			if ($this->_validator->validEmail($userEmail)) {
-				$_SESSION['email'] = $userEmail;
-			} else {
+			if (!$this->_validator->validEmail($userEmail)) {
 				$this->_f3->set('errors["email"]', 'Not a valid email');
 			}
 
 			// validate state
 			if ($this->_validator->validState($userState)) {
-				$_SESSION['state'] = $userState;
-			} else {
 				$this->_f3->set('errors["state"]', 'Not a valid state...');
 			}
 
 			// validate seeking
 			if (isset($userSeeking)) {
 				if ($this->_validator->validGender($userSeeking)) {
-					$_SESSION['seeking'] = $userSeeking;
-				} else {
 					$this->_f3->set('errors["seeking"]', 'Not a valid gender');
 				}
 			}
 
-			// validate biography
-			if (isset($userBio)) {
-				// since we sanitized the input earlier with prep_input, we don't need to worry about it here
-				$_SESSION['biography'] = $userBio;
-			}
-
-			// if there are no errors, redirect to sign-up-3
+			// if there are no errors, assign the user's email, state, seeking, and bio then redirect to sign-up-3 OR summary
 			if (empty($this->_f3->get('errors'))) {
-				$this->_f3->reroute('/sign-up-3');
+				// use the setters on
+				$_SESSION['member']->setEmail($userEmail);
+				$_SESSION['member']->setState($userState);
+				$_SESSION['member']->setSeeking($userSeeking);
+				$_SESSION['member']->setBio($userBio);
+
+				if ($_SESSION['member'] instanceof PremiumMember) {
+					$this->_f3->reroute('/sign-up-3');
+				} else {
+					$this->_f3->reroute('/summary');
+				}
 			}
 		}
 
@@ -183,9 +172,7 @@ class Controller
 
 			// validate indoor activities
 			if (isset($userIndoors)) {
-				if ($this->_validator->validIndoor($userIndoors)) {
-					$_SESSION['indoorInterests'] = $userIndoors;
-				} else {
+				if (!$this->_validator->validIndoor($userIndoors)) {
 					$this->_f3->set('errors["indoor"]', 'Not a valid indoor activity...');
 				}
 			}
@@ -193,14 +180,15 @@ class Controller
 			// validate outdoor activities
 			if (isset($userOutdoors)) {
 				if ($this->_validator->validOutdoor($userOutdoors)) {
-					$_SESSION['outdoorInterests'] = $userOutdoors;
-				} else {
 					$this->_f3->set('errors["outdoor"]', 'Not a valid outdoor activity...');
 				}
 			}
 
-			// if there are no errors, redirect to sign-up-3
+			// if there are no errors, assign the interests to our object then redirect to summary
 			if (empty($this->_f3->get('errors'))) {
+				$_SESSION['member']->setIndoorInterests($userIndoors);
+				$_SESSION['member']->setOutdoorInterests($userOutdoors);
+				
 				$this->_f3->reroute('/summary');
 			}
 		}
