@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Member class takes the user info that's submitted, and turn it into an object for easier storage/retrieval
- *
+ * Member class takes the user info that's submitted, and turn it into an object for easier storage/retrieval.
+ * Standard users don't get access to the interests sections
+ * PHP version: 7.3
  * @author Ryan Hendrickson
  * @version https://github.com/rynhndrcksn/dating
  */
