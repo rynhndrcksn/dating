@@ -9,12 +9,13 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// create an instance of the base class (fat-free framework)
+// require autoload file
+require_once ('vendor/autoload.php');
+
+// create an instance of the base class (fat-free framework) this needs to be below autoload but before $controller
 $f3 = Base::instance();
 $f3->set('DEBUG', 3);
 
-// require autoload file
-require_once ('vendor/autoload.php');
 $controller = new Controller($f3);
 
 // create a session

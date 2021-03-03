@@ -179,7 +179,7 @@ class Controller
 
 			// validate outdoor activities
 			if (isset($userOutdoors)) {
-				if ($this->_validator->validOutdoor($userOutdoors)) {
+				if (!$this->_validator->validOutdoor($userOutdoors)) {
 					$this->_f3->set('errors["outdoor"]', 'Not a valid outdoor activity...');
 				}
 			}
@@ -188,7 +188,7 @@ class Controller
 			if (empty($this->_f3->get('errors'))) {
 				$_SESSION['member']->setIndoorInterests($userIndoors);
 				$_SESSION['member']->setOutdoorInterests($userOutdoors);
-				
+
 				$this->_f3->reroute('/summary');
 			}
 		}
